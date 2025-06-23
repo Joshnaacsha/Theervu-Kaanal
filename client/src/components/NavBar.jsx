@@ -41,6 +41,20 @@ const NavBar = () => {
     }
   };
 
+  const getSettingsPath = () => {
+    if (!user) return '/settings';
+    switch (user.role?.toLowerCase()) {
+      case 'admin':
+        return '/admin/settings';
+      case 'official':
+        return '/official/settings';
+      case 'petitioner':
+        return '/petitioner/settings';
+      default:
+        return '/settings';
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container">
@@ -79,7 +93,7 @@ const NavBar = () => {
                     <User size={16} className="me-2" />
                     Dashboard
                   </Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/settings">
+                  <Dropdown.Item as={Link} to={getSettingsPath()}>
                     <Settings size={16} className="me-2" />
                     Settings
                   </Dropdown.Item>

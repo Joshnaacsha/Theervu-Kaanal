@@ -342,8 +342,8 @@ const AdminDashboard = () => {
 
                         {/* Quick Stats */}
                         <Row className="mb-4">
-                            <Col md={3}>
-                                <Card className="p-3 shadow-sm">
+                            <Col xs={12} sm={6} md={3} className="mb-3 mb-md-0">
+                                <Card className="p-3 shadow-sm h-100">
                                     <h6 className="text-muted">Total Cases</h6>
                                     <h4>{quickStats.totalCases.value}</h4>
                                     <span className={`text-${quickStats.totalCases.trend.includes("+") ? "success" : "muted"}`}>
@@ -351,8 +351,8 @@ const AdminDashboard = () => {
                                     </span>
                                 </Card>
                             </Col>
-                            <Col md={3}>
-                                <Card className="p-3 shadow-sm">
+                            <Col xs={12} sm={6} md={3} className="mb-3 mb-md-0">
+                                <Card className="p-3 shadow-sm h-100">
                                     <h6 className="text-muted">Active Cases</h6>
                                     <h4>{quickStats.activeCases.value}</h4>
                                     <span className={`text-${quickStats.activeCases.trend.includes("+") ? "warning" : "muted"}`}>
@@ -360,8 +360,8 @@ const AdminDashboard = () => {
                                     </span>
                                 </Card>
                             </Col>
-                            <Col md={3}>
-                                <Card className="p-3 shadow-sm">
+                            <Col xs={12} sm={6} md={3} className="mb-3 mb-md-0">
+                                <Card className="p-3 shadow-sm h-100">
                                     <h6 className="text-muted">Cases Resolved</h6>
                                     <h4>{quickStats.resolvedCases.value}</h4>
                                     <span className={`text-${quickStats.resolvedCases.trend.includes("+") ? "success" : "muted"}`}>
@@ -369,8 +369,8 @@ const AdminDashboard = () => {
                                     </span>
                                 </Card>
                             </Col>
-                            <Col md={3}>
-                                <Card className="p-3 shadow-sm">
+                            <Col xs={12} sm={6} md={3}>
+                                <Card className="p-3 shadow-sm h-100">
                                     <h6 className="text-muted">Departments</h6>
                                     <h4>{quickStats.departments.value}</h4>
                                     <span className="text-muted">{quickStats.departments.trend}</span>

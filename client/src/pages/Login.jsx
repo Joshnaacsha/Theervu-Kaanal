@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Footer from '../shared/Footer';
@@ -27,15 +25,15 @@ const Login = () => {
 
           <div className="row justify-content-center mt-4">
             {/* Petitioner */}
-            <div className="col-md-3 text-center">
-              <div className="card p-3 shadow">
+            <div className="col-12 col-sm-6 col-md-3 text-center mb-4 mb-md-0">
+              <div className="card p-3 shadow h-100">
                 <div className="d-flex justify-content-center mb-3">
                   <div className="bg-primary d-flex align-items-center justify-content-center rounded-circle" style={{ width: '60px', height: '60px' }}>
                     <User size={30} className="text-white" />
                   </div>
                 </div>
                 <h5 className="mt-2">Petitioner</h5>
-                <p>Login to file and track grievances</p>
+                <p>Login as Petitioner</p>
                 <button className="btn btn-primary w-100" onClick={() => navigate('/login/petitioner')}>
                   Login as Petitioner
                 </button>
@@ -43,8 +41,8 @@ const Login = () => {
             </div>
 
             {/* Officials */}
-            <div className="col-md-3 text-center">
-              <div className="card p-3 shadow">
+            <div className="col-12 col-sm-6 col-md-3 text-center mb-4 mb-md-0">
+              <div className="card p-3 shadow h-100">
                 <div className="d-flex justify-content-center mb-3">
                   <div className="bg-success d-flex align-items-center justify-content-center rounded-circle" style={{ width: '60px', height: '60px' }}>
                     <FileText size={30} className="text-white" />
@@ -59,8 +57,8 @@ const Login = () => {
             </div>
 
             {/* Master Controller */}
-            <div className="col-md-3 text-center">
-              <div className="card p-3 shadow">
+            <div className="col-12 col-sm-12 col-md-3 text-center">
+              <div className="card p-3 shadow h-100">
                 <div className="d-flex justify-content-center mb-3">
                   <div className="bg-danger d-flex align-items-center justify-content-center rounded-circle" style={{ width: '60px', height: '60px' }}>
                     <Shield size={30} className="text-white" />

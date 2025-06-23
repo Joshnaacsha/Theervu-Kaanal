@@ -26,6 +26,7 @@ const PetitionerDashboard = () => {
     const [stats, setStats] = useState({
         total: 0,
         pending: 0,
+        assigned: 0,
         inProgress: 0,
         resolved: 0
     });
@@ -98,6 +99,7 @@ const PetitionerDashboard = () => {
                 const stats = {
                     total: transformedGrievances.length,
                     pending: transformedGrievances.filter(g => g.status === 'pending').length,
+                    assigned: transformedGrievances.filter(g => g.status === 'assigned').length,
                     inProgress: transformedGrievances.filter(g => g.status === 'in-progress').length,
                     resolved: transformedGrievances.filter(g => g.status === 'resolved').length
                 };
@@ -269,15 +271,19 @@ const PetitionerDashboard = () => {
             <NavBar />
             <div className="container-fluid py-4">
                 {/* Header Section */}
-                <div className="d-flex justify-content-between align-items-center mb-4">
-                    <h2 className="mb-0">My Grievances</h2>
-                    <button
-                        className="btn btn-primary d-flex align-items-center"
-                        onClick={() => navigate("/submit-grievance")}
-                    >
-                        <Plus size={18} className="me-2" />
-                        Submit New Grievance
-                    </button>
+                <div className="row mb-4 align-items-center">
+                    <div className="col-12 col-md-6">
+                        <h2 className="mb-0">My Grievances</h2>
+                    </div>
+                    <div className="col-12 col-md-6 d-flex justify-content-md-end mt-3 mt-md-0">
+                        <button
+                            className="btn btn-primary d-flex align-items-center w-100 w-md-auto flex-grow-0"
+                            onClick={() => navigate("/submit-grievance")}
+                        >
+                            <Plus size={18} className="me-2" />
+                            Submit New Grievance
+                        </button>
+                    </div>
                 </div>
 
                 {/* Alert Message */}
@@ -294,32 +300,40 @@ const PetitionerDashboard = () => {
 
                 {/* Stats Section */}
                 <div className="row mb-4">
-                    <div className="col-md-3">
-                        <div className="card bg-primary text-white">
+                    <div className="col-12 col-sm-6 col-md-2 mb-3 mb-md-0">
+                        <div className="card bg-primary text-white h-100">
                             <div className="card-body">
                                 <h5 className="card-title">Total Grievances</h5>
                                 <h2 className="card-text">{stats.total}</h2>
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-3">
-                        <div className="card bg-warning text-dark">
+                    <div className="col-12 col-sm-6 col-md-2 mb-3 mb-md-0">
+                        <div className="card bg-warning text-dark h-100">
                             <div className="card-body">
                                 <h5 className="card-title">Pending</h5>
                                 <h2 className="card-text">{stats.pending}</h2>
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-3">
-                        <div className="card bg-info text-white">
+                    <div className="col-12 col-sm-6 col-md-2 mb-3 mb-md-0">
+                        <div className="card bg-secondary text-white h-100">
+                            <div className="card-body">
+                                <h5 className="card-title">Assigned</h5>
+                                <h2 className="card-text">{stats.assigned}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-12 col-sm-6 col-md-3 mb-3 mb-md-0">
+                        <div className="card bg-info text-white h-100">
                             <div className="card-body">
                                 <h5 className="card-title">In Progress</h5>
                                 <h2 className="card-text">{stats.inProgress}</h2>
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-3">
-                        <div className="card bg-success text-white">
+                    <div className="col-12 col-sm-6 col-md-3">
+                        <div className="card bg-success text-white h-100">
                             <div className="card-body">
                                 <h5 className="card-title">Resolved</h5>
                                 <h2 className="card-text">{stats.resolved}</h2>
@@ -592,12 +606,12 @@ const PetitionerDashboard = () => {
                                         <h6>Document: {selectedGrievance.resolutionDocument.filename}</h6>
                                         <p>Uploaded on: {moment(selectedGrievance.resolutionDocument.uploadedAt).format('MMMM Do YYYY, h:mm a')}</p>
                                         <a
-                                            href={`http://localhost:5000/${selectedGrievance.resolutionDocument.path}`}
+                                            href={selectedGrievance.resolutionDocument.url || '#'}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="btn btn-primary"
+                                            className="btn btn-outline-primary mt-2"
                                         >
-                                            View Document
+                                            Download/View Document
                                         </a>
                                     </div>
                                 </div>
@@ -606,59 +620,87 @@ const PetitionerDashboard = () => {
                     </div>
                 )}
 
-                <EscalateModal
-                    isOpen={showEscalateModal}
-                    onClose={() => setShowEscalateModal(false)}
-                    onSubmit={handleEscalateSubmit}
-                    grievanceId={selectedGrievanceForEscalation?._id}
-                />
+                {/* Escalate Modal */}
+                {showEscalateModal && selectedGrievanceForEscalation && (
+                    <EscalateModal
+                        show={showEscalateModal}
+                        onHide={() => setShowEscalateModal(false)}
+                        onSubmit={handleEscalateSubmit}
+                        selectedGrievance={selectedGrievanceForEscalation}
+                        escalationReason={escalationReason}
+                        setEscalationReason={setEscalationReason}
+                    />
+                )}
 
-                {/* Rate Your Experience Modal */}
-                <Modal
-                    show={showFeedbackModal}
-                    onHide={() => setShowFeedbackModal(false)}
-                    style={{ zIndex: 9999 }}
-                    dialogClassName="modal-dialog-centered"
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>Rate Your Experience</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="mb-4">
-                            <p className="mb-3">How would you rate the handling of your grievance?</p>
-                            <div className="d-flex justify-content-center gap-3 mb-3">
-                                {[1, 2, 3, 4, 5].map((star) => (
-                                    <div
-                                        key={star}
-                                        onClick={() => setFeedbackRating(star)}
-                                        style={{ cursor: 'pointer', fontSize: '24px' }}
-                                        className={`star-rating ${feedbackRating >= star ? 'text-warning' : 'text-muted'}`}
-                                    >
-                                        ★
+                {/* Feedback Modal */}
+                {showFeedbackModal && selectedGrievanceForFeedback && (
+                    <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
+                        <div className="modal-dialog modal-lg">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title">
+                                        Give Feedback - Grievance {selectedGrievanceForFeedback.grievanceId}
+                                    </h5>
+                                    <button
+                                        type="button"
+                                        className="btn-close"
+                                        onClick={() => {
+                                            setShowFeedbackModal(false);
+                                            setSelectedGrievanceForFeedback(null);
+                                        }}
+                                    ></button>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="mb-3">
+                                        <label htmlFor="feedbackRating" className="form-label">Rating</label>
+                                        <select
+                                            id="feedbackRating"
+                                            className="form-select"
+                                            value={feedbackRating}
+                                            onChange={(e) => setFeedbackRating(Number(e.target.value))}
+                                        >
+                                            <option value={0}>Select a rating</option>
+                                            <option value={1}>1</option>
+                                            <option value={2}>2</option>
+                                            <option value={3}>3</option>
+                                            <option value={4}>4</option>
+                                            <option value={5}>5</option>
+                                        </select>
                                     </div>
-                                ))}
+                                    <div className="mb-3">
+                                        <label htmlFor="feedbackComment" className="form-label">Comment</label>
+                                        <textarea
+                                            id="feedbackComment"
+                                            className="form-control"
+                                            rows="3"
+                                            value={feedbackComment}
+                                            onChange={(e) => setFeedbackComment(e.target.value)}
+                                        ></textarea>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button
+                                        type="button"
+                                        className="btn btn-secondary"
+                                        onClick={() => {
+                                            setShowFeedbackModal(false);
+                                            setSelectedGrievanceForFeedback(null);
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary"
+                                        onClick={submitFeedback}
+                                    >
+                                        Submit Feedback
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <Form.Group>
-                            <Form.Label>Additional Comments (Optional)</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                rows={4}
-                                value={feedbackComment}
-                                onChange={(e) => setFeedbackComment(e.target.value)}
-                                placeholder="Share your experience with how your grievance was handled..."
-                            />
-                        </Form.Group>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowFeedbackModal(false)}>
-                            Cancel
-                        </Button>
-                        <Button variant="primary" onClick={submitFeedback}>
-                            Submit Feedback
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                    </div>
+                )}
             </div>
             <Footer />
         </>

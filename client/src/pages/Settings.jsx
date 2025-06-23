@@ -126,8 +126,8 @@ const Settings = () => {
             <NavBar />
             <div className="container py-4 flex-grow-1">
                 <div className="row">
-                    <div className="col-md-3">
-                        <div className="card">
+                    <div className="col-12 col-md-3 mb-4 mb-md-0">
+                        <div className="card h-100">
                             <div className="list-group list-group-flush">
                                 <button
                                     className={`list-group-item list-group-item-action ${activeTab === 'profile' ? 'active' : ''}`}
@@ -151,8 +151,8 @@ const Settings = () => {
                         </div>
                     </div>
 
-                    <div className="col-md-9">
-                        <div className="card">
+                    <div className="col-12 col-md-9">
+                        <div className="card h-100">
                             <div className="card-body">
                                 {activeTab === 'profile' && (
                                     <form onSubmit={handleProfileUpdate}>
@@ -163,7 +163,7 @@ const Settings = () => {
                                                 type="text"
                                                 className="form-control"
                                                 value={profileData.name}
-                                                onChange={(e) => setProfileData({...profileData, name: e.target.value})}
+                                                onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
                                             />
                                         </div>
                                         <div className="mb-3">
@@ -208,7 +208,7 @@ const Settings = () => {
                                                 type="password"
                                                 className="form-control"
                                                 value={passwordData.currentPassword}
-                                                onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
+                                                onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
                                             />
                                         </div>
                                         <div className="mb-3">
@@ -217,7 +217,7 @@ const Settings = () => {
                                                 type="password"
                                                 className="form-control"
                                                 value={passwordData.newPassword}
-                                                onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
+                                                onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                                             />
                                         </div>
                                         <div className="mb-3">
@@ -226,7 +226,7 @@ const Settings = () => {
                                                 type="password"
                                                 className="form-control"
                                                 value={passwordData.confirmPassword}
-                                                onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
+                                                onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
                                             />
                                         </div>
                                         <button type="submit" className="btn btn-primary" disabled={loading}>

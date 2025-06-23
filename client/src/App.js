@@ -23,6 +23,8 @@ import RTODashboard from "./official_dept/Rto";
 import ElectricityDashboard from "./official_dept/Electricity";
 import SubmitGrievance from './pages/SubmitGrievance';
 import Settings from './pages/Settings';
+import TermsAndConditions from './pages/TermsAndConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -68,6 +70,8 @@ function App() {
           <Route path="/register/petitioner" element={<PetitionerRegistration />} />
           <Route path="/register/official" element={<OfficialRegistration />} />
           <Route path="/register/admin" element={<AdminRegistration />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
           {/* Protected Petitioner Routes */}
           <Route element={<ProtectedRoute allowedRoles={['petitioner']} />}>

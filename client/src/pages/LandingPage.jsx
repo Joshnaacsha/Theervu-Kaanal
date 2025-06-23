@@ -29,32 +29,32 @@ const LandingPage = () => {
             </nav>
 
             <Container className="py-5">
-                <Row className="mb-5">
-                    <Col md={6} className="text-center text-md-start">
+                <Row className="mb-5 align-items-center">
+                    <Col xs={12} md={6} className="text-center text-md-start mb-4 mb-md-0">
                         <h1 className="display-4 mb-4">Welcome to GRS</h1>
                         <p className="lead mb-4">
                             A platform dedicated to addressing and resolving your grievances efficiently.
                             Submit, track, and get timely updates on your complaints.
                         </p>
                         <button
-                            className="btn btn-primary btn-lg"
+                            className="btn btn-primary btn-lg w-100 w-md-auto"
                             onClick={() => navigate('/register/petitioner')}
                         >
                             Register Now
                         </button>
                     </Col>
-                    <Col md={6} className="d-flex align-items-center justify-content-center">
+                    <Col xs={12} md={6} className="d-flex align-items-center justify-content-center mb-4 mb-md-0">
                         <img
                             src="/images/grievance.svg"
                             alt="Grievance Portal"
                             className="img-fluid"
-                            style={{ maxHeight: '300px' }}
+                            style={{ maxHeight: '300px', width: '100%', height: 'auto' }}
                         />
                     </Col>
                 </Row>
 
                 <Row className="mb-5">
-                    <Col>
+                    <Col xs={12}>
                         <Card className="border-0 shadow-sm">
                             <Card.Body>
                                 <TrackGrievance />
@@ -67,7 +67,7 @@ const LandingPage = () => {
                     <Col xs={12} className="text-center mb-4">
                         <h2>Our Services</h2>
                     </Col>
-                    <Col md={4} className="mb-4">
+                    <Col xs={12} sm={6} md={4} className="mb-4">
                         <Card className="h-100 shadow-sm">
                             <Card.Body className="text-center">
                                 <div className="mb-3">
@@ -80,7 +80,7 @@ const LandingPage = () => {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col md={4} className="mb-4">
+                    <Col xs={12} sm={6} md={4} className="mb-4">
                         <Card className="h-100 shadow-sm">
                             <Card.Body className="text-center">
                                 <div className="mb-3">
@@ -93,7 +93,7 @@ const LandingPage = () => {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <Col md={4} className="mb-4">
+                    <Col xs={12} sm={12} md={4} className="mb-4">
                         <Card className="h-100 shadow-sm">
                             <Card.Body className="text-center">
                                 <div className="mb-3">

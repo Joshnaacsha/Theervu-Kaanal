@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Link as RouterLink } from 'react-router-dom';
 import Footer from '../shared/Footer';
 import NavBar from '../components/NavBar';
 import { Shield, ArrowLeft } from 'lucide-react';
@@ -126,7 +125,7 @@ const AdminRegistration = () => {
           <Link to="/register" className="btn btn-outline-danger me-3">
             <ArrowLeft size={18} className="me-1" /> Back
           </Link>
-          <h2 className="mb-0">Master Controller Registration</h2>
+          <h2 className="mb-0">Admin Registration</h2>
         </div>
 
         <div className="card shadow-sm">
@@ -137,12 +136,12 @@ const AdminRegistration = () => {
                   <div className="bg-danger d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style={{ width: '80px', height: '80px' }}>
                     <Shield size={40} className="text-white" />
                   </div>
-                  <h4>Create Your Master Controller Account</h4>
-                  <p className="text-muted">Registration as Master Controller requires approval</p>
+                  <h4>Create Your Admin Account</h4>
+                  <p className="text-muted">Registration as Admin requires approval</p>
                 </div>
 
                 <div className="alert alert-warning" role="alert">
-                  <strong>Important:</strong> Master Controller accounts have full administrative access to the system. Registration requires a valid security key and will be subject to verification.
+                  <strong>Important:</strong> Admin accounts have full administrative access to the system. Registration requires a valid security key and will be subject to verification.
                 </div>
 
                 <form onSubmit={handleSubmit}>
@@ -233,8 +232,8 @@ const AdminRegistration = () => {
                   </div>
 
                   {/* <div className="mt-3"> */}
-                    {/* <label htmlFor="securityKey" className="form-label">Security Key*</label> */}
-                    {/* <input
+                  {/* <label htmlFor="securityKey" className="form-label">Security Key*</label> */}
+                  {/* <input
                       type="password"
                       className={`form-control ${errors.securityKey ? 'is-invalid' : ''}`}
                       id="securityKey"
@@ -243,7 +242,7 @@ const AdminRegistration = () => {
                       onChange={handleChange}
                       placeholder="Enter your administrator security key"
                     /> */}
-                    {/* {errors.securityKey && <div className="invalid-feedback">{errors.securityKey}</div>}
+                  {/* {errors.securityKey && <div className="invalid-feedback">{errors.securityKey}</div>}
                     <small className="form-text text-muted">The security key is provided by existing administrators.</small>
                   </div> */}
 
@@ -286,7 +285,7 @@ const AdminRegistration = () => {
                           required
                         />
                         <label className="form-check-label" htmlFor="terms">
-                          I agree to the Terms of Service, Privacy Policy, and Security Protocols
+                          I agree to the <RouterLink to="/terms-and-conditions" target="_blank">Terms of Service</RouterLink>, <RouterLink to="/privacy-policy" target="_blank">Privacy Policy</RouterLink>, and Security Protocols
                         </label>
                       </div>
 
@@ -298,7 +297,7 @@ const AdminRegistration = () => {
                           required
                         />
                         <label className="form-check-label" htmlFor="responsibility">
-                          I understand the responsibilities and security implications of master controller access
+                          I understand the responsibilities and security implications of admin access
                         </label>
                       </div>
                     </div>
@@ -306,7 +305,7 @@ const AdminRegistration = () => {
 
                   <div className="d-grid gap-2 mt-4">
                     <button type="submit" className="btn btn-danger btn-lg">
-                      Submit Registration Request
+                      Register as Admin
                     </button>
                   </div>
                 </form>

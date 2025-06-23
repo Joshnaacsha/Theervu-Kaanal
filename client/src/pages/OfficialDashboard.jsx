@@ -145,7 +145,7 @@ const OfficialDashboard = () => {
                 {/* Kanban Board */}
                 <Row className="d-flex flex-nowrap overflow-auto">
                     {Object.entries(columns).map(([columnId, column]) => (
-                        <Col key={columnId} md={4} className="d-flex flex-column p-2" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, columnId)}>
+                        <Col key={columnId} xs={12} sm={6} md={4} className="d-flex flex-column p-2" onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, columnId)}>
                             <Card className="mb-3 shadow">
                                 <Card.Body className="text-center">
                                     <h5 className="mb-0">{column.title}</h5>

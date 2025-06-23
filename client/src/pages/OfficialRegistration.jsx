@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Link as RouterLink } from 'react-router-dom';
 import Footer from '../shared/Footer';
 import NavBar from '../components/NavBar';
 import { FileText, ArrowLeft } from 'lucide-react';
@@ -382,7 +382,7 @@ const OfficialRegistration = () => {
                           required
                         />
                         <label className="form-check-label" htmlFor="terms">
-                          I agree to the Terms of Service and Privacy Policy
+                          I agree to the <RouterLink to="/terms-and-conditions">Terms of Service</RouterLink> and <RouterLink to="/privacy-policy">Privacy Policy</RouterLink>
                         </label>
                       </div>
                     </div>

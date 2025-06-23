@@ -40,7 +40,7 @@ const HistoricalDatabase = () => {
 
             {/* Search & Filter Row */}
             <div className="row mb-3">
-                <div className="col-md-6">
+                <div className="col-12 col-md-6 mb-2 mb-md-0">
                     <div className="input-group">
                         <span className="input-group-text"><MdSearch /></span>
                         <input
@@ -52,7 +52,7 @@ const HistoricalDatabase = () => {
                         />
                     </div>
                 </div>
-                <div className="col-md-6">
+                <div className="col-12 col-md-6">
                     <select className="form-select" value={selectedDepartment} onChange={(e) => setSelectedDepartment(e.target.value)}>
                         {DEPARTMENTS.map((dept) => (
                             <option key={dept} value={dept}>{dept}</option>

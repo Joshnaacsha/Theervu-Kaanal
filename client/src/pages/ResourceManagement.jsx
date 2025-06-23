@@ -130,7 +130,7 @@ const ResourceManagement = () => {
                 <Container fluid className="py-3">
                     {/* Filters Row */}
                     <Row className="mb-3 g-2">
-                        <Col>
+                        <Col xs={12} sm={6} md className="mb-2 mb-md-0">
                             <Form.Control
                                 type="text"
                                 placeholder="Search..."
@@ -138,7 +138,7 @@ const ResourceManagement = () => {
                                 onChange={handleFilterChange}
                             />
                         </Col>
-                        <Col>
+                        <Col xs={12} sm={6} md className="mb-2 mb-md-0">
                             <Form.Select
                                 name="department"
                                 value={filters.department}
@@ -150,7 +150,7 @@ const ResourceManagement = () => {
                                 <option value="RTO">RTO</option>
                             </Form.Select>
                         </Col>
-                        <Col>
+                        <Col xs={12} sm={6} md className="mb-2 mb-md-0">
                             <Form.Select
                                 name="status"
                                 value={filters.status}
@@ -162,7 +162,7 @@ const ResourceManagement = () => {
                                 <option value="completed">Completed</option>
                             </Form.Select>
                         </Col>
-                        <Col>
+                        <Col xs={12} sm={6} md className="mb-2 mb-md-0">
                             <Form.Select
                                 name="priority"
                                 value={filters.priority}
@@ -174,7 +174,7 @@ const ResourceManagement = () => {
                                 <option value="low">Low</option>
                             </Form.Select>
                         </Col>
-                        <Col>
+                        <Col xs={12} sm={6} md className="mb-2 mb-md-0">
                             <Form.Control
                                 type="date"
                                 name="startDate"
@@ -182,7 +182,7 @@ const ResourceManagement = () => {
                                 onChange={handleFilterChange}
                             />
                         </Col>
-                        <Col>
+                        <Col xs={12} sm={6} md>
                             <Form.Control
                                 type="date"
                                 name="endDate"

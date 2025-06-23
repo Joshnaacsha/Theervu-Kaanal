@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import NavBar from '../components/NavBar';
 import Footer from '../shared/Footer';
-import { Upload, FileText } from 'lucide-react';
+import { Upload, FileText, Mic, MicOff, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import LocationDropdowns from '../components/LocationDropdowns';
 
@@ -25,6 +25,9 @@ const SubmitGrievance = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState('');
     const [submitSuccess, setSubmitSuccess] = useState(false);
+    const recognitionRef = useRef(null);
+    const [isListening, setIsListening] = useState(false);
+    const [recognitionActive, setRecognitionActive] = useState(false);
 
     // Pre-fill user data if available
     const [userData] = useState({
@@ -94,6 +97,47 @@ const SubmitGrievance = () => {
                     }));
                 }
             }
+        }
+    };
+
+    const handleVoiceInput = () => {
+        if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+            toast.error('Voice input is not supported in this browser.');
+            return;
+        }
+        if (recognitionActive) {
+            // Already listening, ignore or stop
+            return;
+        }
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!recognitionRef.current) {
+            recognitionRef.current = new SpeechRecognition();
+            recognitionRef.current.lang = 'en-US';
+            recognitionRef.current.interimResults = false;
+            recognitionRef.current.maxAlternatives = 1;
+        }
+        const recognition = recognitionRef.current;
+        recognition.onstart = () => {
+            setIsListening(true);
+            setRecognitionActive(true);
+        };
+        recognition.onend = () => {
+            setIsListening(false);
+            setRecognitionActive(false);
+        };
+        recognition.onerror = (event) => {
+            setIsListening(false);
+            setRecognitionActive(false);
+            toast.error('Voice input error: ' + event.error);
+        };
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            setFormData(prev => ({ ...prev, description: prev.description ? prev.description + ' ' + transcript : transcript }));
+        };
+        try {
+            recognition.start();
+        } catch (err) {
+            // Already started, do nothing
         }
     };
 
@@ -250,13 +294,13 @@ const SubmitGrievance = () => {
             <NavBar />
             <div className="container py-4">
                 <div className="row justify-content-center">
-                    <div className="col-md-8">
+                    <div className="col-12 col-md-8">
                         <div className="card shadow">
                             <div className="card-body">
                                 <h2 className="text-center mb-4">Submit New Grievance</h2>
 
                                 {/* Tab Navigation */}
-                                <div className="nav nav-tabs mb-4" role="tablist">
+                                <div className="nav nav-tabs mb-4 flex-column flex-sm-row" role="tablist">
                                     <button
                                         className={`nav-link ${activeTab === 'form' ? 'active' : ''}`}
                                         onClick={() => setActiveTab('form')}
@@ -354,15 +398,28 @@ const SubmitGrievance = () => {
 
                                             <div className="mb-3">
                                                 <label className="form-label">Description*</label>
-                                                <textarea
-                                                    className={`form-control ${errors.description ? 'is-invalid' : ''}`}
-                                                    name="description"
-                                                    value={formData.description}
-                                                    onChange={handleChange}
-                                                    rows="5"
-                                                    placeholder="Provide detailed description of your grievance"
-                                                ></textarea>
+                                                <div className="input-group">
+                                                    <textarea
+                                                        className={`form-control ${errors.description ? 'is-invalid' : ''}`}
+                                                        name="description"
+                                                        value={formData.description}
+                                                        onChange={handleChange}
+                                                        rows="5"
+                                                        placeholder="Provide detailed description of your grievance"
+                                                    ></textarea>
+                                                    <button
+                                                        type="button"
+                                                        className={`btn btn-outline-secondary px-3${isListening ? ' active' : ''}`}
+                                                        onClick={handleVoiceInput}
+                                                        title={isListening ? 'Listening...' : 'Speak your description'}
+                                                        tabIndex={-1}
+                                                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                    >
+                                                        {isListening ? <Loader2 size={20} className="spin" /> : <Mic size={20} />}
+                                                    </button>
+                                                </div>
                                                 {errors.description && <div className="invalid-feedback">{errors.description}</div>}
+                                                <div className="form-text">You can type or use voice input for the description.</div>
                                             </div>
 
                                             <div className="mb-3">

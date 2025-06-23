@@ -19,6 +19,7 @@ import { Server } from 'socket.io';
 import cron from 'node-cron';
 import { checkEligibleEscalations } from './controllers/grievanceController.js';
 import smartQueryRouter from './routes/smartQuery.js';
+import usersRoutes from './routes/users.js';
 
 // Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);
@@ -60,7 +61,7 @@ connectDB();
 
 // Initialize escalation checker
 let lastCheck = null;
-cron.schedule('* * * * *', async () => {
+cron.schedule('0 12 * * *', async () => {
     const now = new Date();
     console.log('\n=== Escalation Check ===');
     console.log('Time:', now.toISOString());
@@ -99,6 +100,7 @@ app.use('/api/grievances', grievanceRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/smart-query', smartQueryRouter);
+app.use('/api/users', usersRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
