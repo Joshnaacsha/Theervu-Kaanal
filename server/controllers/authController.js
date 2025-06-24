@@ -226,6 +226,7 @@ export const loginPetitioner = async (req, res) => {
                 firstName: petitioner.firstName,
                 lastName: petitioner.lastName,
                 email: petitioner.email,
+                phone: petitioner.phone,
                 role: 'petitioner'
             }
         });
@@ -263,6 +264,7 @@ export const loginOfficial = async (req, res) => {
                 firstName: official.firstName,
                 lastName: official.lastName,
                 email: official.email,
+                phone: official.phone,
                 role: 'official',
                 department: official.department,
                 taluk: official.taluk,
@@ -304,6 +306,7 @@ export const loginAdmin = async (req, res) => {
                 firstName: admin.firstName,
                 lastName: admin.lastName,
                 email: admin.email,
+                phone: admin.phone,
                 role: 'admin'
             }
         });

@@ -3,21 +3,23 @@ import { useAuth } from '../context/AuthContext';
 import NavBar from '../components/NavBar';
 import Footer from '../shared/Footer';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { User, Lock, Mail, Edit, Phone, UserCheck, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const Settings = () => {
     const { user, authenticatedFetch } = useAuth();
+    const { theme, setTheme } = useTheme();
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('profile');
     const [loading, setLoading] = useState(false);
     const [profileData, setProfileData] = useState({
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
+        phone: '',
         department: '',
         id: '',
-        contactPreferences: {
-            email: true,
-            sms: false,
-            notifications: true
-        }
     });
     const [passwordData, setPasswordData] = useState({
         currentPassword: '',
@@ -27,37 +29,42 @@ const Settings = () => {
 
     useEffect(() => {
         if (user) {
-            setProfileData(prev => ({
-                ...prev,
-                name: user.name || '',
+            setProfileData({
+                firstName: user.firstName || '',
+                lastName: user.lastName || '',
                 email: user.email || '',
-                department: user.department || '',
-                id: user.employeeId || user.adminId || ''
-            }));
+                phone: user.phone || 'Not provided',
+                department: user.department || user.role || '',
+                id: user.employeeId || user.adminId || user.id || ''
+            });
         }
     }, [user]);
 
-    const handleProfileUpdate = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const response = await authenticatedFetch('/api/users/profile', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(profileData)
-            });
-
-            if (response.ok) {
-                toast.success('Profile updated successfully');
-            }
-        } catch (error) {
-            toast.error('Failed to update profile');
-            console.error('Profile update error:', error);
-        } finally {
-            setLoading(false);
+    const getUpdateProfilePath = () => {
+        if (!user) return '/';
+        switch (user.role?.toLowerCase()) {
+            case 'admin':
+                return '/admin/update-profile';
+            case 'official':
+                switch (user.department?.toLowerCase()) {
+                    case 'rto':
+                        return '/official-dashboard/rto/update-profile';
+                    case 'water':
+                        return '/official-dashboard/water/update-profile';
+                    case 'electricity':
+                        return '/official-dashboard/electricity/update-profile';
+                    default:
+                        return '/official/update-profile';
+                }
+            case 'petitioner':
+                return '/update-profile';
+            default:
+                return '/';
         }
+    };
+
+    const handleUpdateProfileClick = () => {
+        navigate(getUpdateProfilePath());
     };
 
     const handlePasswordChange = async (e) => {
@@ -79,7 +86,7 @@ const Settings = () => {
                     newPassword: passwordData.newPassword
                 })
             });
-
+            const data = await response.json();
             if (response.ok) {
                 toast.success('Password updated successfully');
                 setPasswordData({
@@ -87,35 +94,12 @@ const Settings = () => {
                     newPassword: '',
                     confirmPassword: ''
                 });
+            } else {
+                toast.error(data.message || 'Failed to update password');
             }
         } catch (error) {
-            toast.error('Failed to update password');
+            toast.error(error.message || 'Failed to update password');
             console.error('Password update error:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleContactPreferences = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const response = await authenticatedFetch('/api/users/preferences', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contactPreferences: profileData.contactPreferences
-                })
-            });
-
-            if (response.ok) {
-                toast.success('Contact preferences updated successfully');
-            }
-        } catch (error) {
-            toast.error('Failed to update contact preferences');
-            console.error('Contact preferences update error:', error);
         } finally {
             setLoading(false);
         }
@@ -130,175 +114,142 @@ const Settings = () => {
                         <div className="card h-100">
                             <div className="list-group list-group-flush">
                                 <button
-                                    className={`list-group-item list-group-item-action ${activeTab === 'profile' ? 'active' : ''}`}
+                                    className={`list-group-item list-group-item-action d-flex align-items-center ${activeTab === 'profile' ? 'active' : ''}`}
                                     onClick={() => setActiveTab('profile')}
                                 >
-                                    Profile Information
+                                    <User className="me-3" /> Profile Information
                                 </button>
                                 <button
-                                    className={`list-group-item list-group-item-action ${activeTab === 'password' ? 'active' : ''}`}
+                                    className={`list-group-item list-group-item-action d-flex align-items-center ${activeTab === 'password' ? 'active' : ''}`}
                                     onClick={() => setActiveTab('password')}
                                 >
-                                    Password Management
+                                    <Lock className="me-3" /> Password Management
                                 </button>
                                 <button
-                                    className={`list-group-item list-group-item-action ${activeTab === 'preferences' ? 'active' : ''}`}
-                                    onClick={() => setActiveTab('preferences')}
+                                    className={`list-group-item list-group-item-action d-flex align-items-center ${activeTab === 'theme' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('theme')}
                                 >
-                                    Contact Preferences
+                                    <Sun className="me-3" /> Theme
                                 </button>
                             </div>
                         </div>
                     </div>
 
                     <div className="col-12 col-md-9">
-                        <div className="card h-100">
-                            <div className="card-body">
-                                {activeTab === 'profile' && (
-                                    <form onSubmit={handleProfileUpdate}>
-                                        <h3 className="mb-4">Profile Information</h3>
-                                        <div className="mb-3">
-                                            <label className="form-label">Name</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                value={profileData.name}
-                                                onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
-                                            />
+                        {activeTab === 'profile' && (
+                            <div className={`card shadow-sm ${theme === 'dark' ? 'text-bg-dark' : ''}`}>
+                                <div className="card-header bg-body-tertiary d-flex justify-content-between align-items-center">
+                                    <h3 className="mb-0">Profile Information</h3>
+                                    <button className="btn btn-outline-primary btn-sm" onClick={handleUpdateProfileClick}>
+                                        <Edit className="me-1" size={16} /> Edit Profile
+                                    </button>
+                                </div>
+                                <div className="card-body">
+                                    <div className="d-flex align-items-center mb-4">
+                                        <img 
+                                            src={`https://ui-avatars.com/api/?name=${profileData.firstName}+${profileData.lastName}&background=random&size=100`} 
+                                            alt="profile" 
+                                            className="rounded-circle me-3" 
+                                        />
+                                        <div>
+                                            <h4 className="mb-0">{`${profileData.firstName} ${profileData.lastName}`}</h4>
+                                            <p className="text-muted mb-0">{profileData.department}</p>
                                         </div>
-                                        <div className="mb-3">
-                                            <label className="form-label">Email</label>
-                                            <input
-                                                type="email"
-                                                className="form-control"
-                                                value={profileData.email}
-                                                readOnly
-                                            />
-                                        </div>
-                                        <div className="mb-3">
-                                            <label className="form-label">Department/Role</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                value={profileData.department || user?.role || ''}
-                                                readOnly
-                                            />
-                                        </div>
-                                        <div className="mb-3">
-                                            <label className="form-label">ID</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                value={profileData.id}
-                                                readOnly
-                                            />
-                                        </div>
-                                        <button type="submit" className="btn btn-primary" disabled={loading}>
-                                            {loading ? 'Updating...' : 'Update Profile'}
-                                        </button>
-                                    </form>
-                                )}
-
-                                {activeTab === 'password' && (
+                                    </div>
+                                    <ul className="list-group list-group-flush">
+                                        <li className="list-group-item d-flex align-items-center">
+                                            <Mail className="me-3 text-primary" />
+                                            <span>{profileData.email}</span>
+                                        </li>
+                                        <li className="list-group-item d-flex align-items-center">
+                                            <Phone className="me-3 text-primary" />
+                                            <span>{profileData.phone}</span>
+                                        </li>
+                                        <li className="list-group-item d-flex align-items-center">
+                                            <UserCheck className="me-3 text-primary" />
+                                            <span>ID: {profileData.id}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+                        {activeTab === 'password' && (
+                            <div className={`card shadow-sm ${theme === 'dark' ? 'text-bg-dark' : ''}`}>
+                                <div className="card-header bg-body-tertiary">
+                                    <h3 className="mb-0">Password Management</h3>
+                                </div>
+                                <div className="card-body">
                                     <form onSubmit={handlePasswordChange}>
-                                        <h3 className="mb-4">Password Management</h3>
                                         <div className="mb-3">
                                             <label className="form-label">Current Password</label>
-                                            <input
-                                                type="password"
-                                                className="form-control"
-                                                value={passwordData.currentPassword}
-                                                onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                                            />
+                                            <div className="input-group">
+                                                <span className="input-group-text"><Lock /></span>
+                                                <input
+                                                    type="password"
+                                                    className="form-control"
+                                                    value={passwordData.currentPassword}
+                                                    onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                                                    placeholder="Enter current password"
+                                                />
+                                            </div>
                                         </div>
                                         <div className="mb-3">
                                             <label className="form-label">New Password</label>
-                                            <input
-                                                type="password"
-                                                className="form-control"
-                                                value={passwordData.newPassword}
-                                                onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                                            />
+                                            <div className="input-group">
+                                                <span className="input-group-text"><Lock /></span>
+                                                <input
+                                                    type="password"
+                                                    className="form-control"
+                                                    value={passwordData.newPassword}
+                                                    onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                                                    placeholder="Enter new password"
+                                                />
+                                            </div>
                                         </div>
                                         <div className="mb-3">
                                             <label className="form-label">Confirm New Password</label>
-                                            <input
-                                                type="password"
-                                                className="form-control"
-                                                value={passwordData.confirmPassword}
-                                                onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                                            />
+                                            <div className="input-group">
+                                                <span className="input-group-text"><Lock /></span>
+                                                <input
+                                                    type="password"
+                                                    className="form-control"
+                                                    value={passwordData.confirmPassword}
+                                                    onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                                                    placeholder="Confirm new password"
+                                                />
+                                            </div>
                                         </div>
                                         <button type="submit" className="btn btn-primary" disabled={loading}>
                                             {loading ? 'Updating...' : 'Change Password'}
                                         </button>
                                     </form>
-                                )}
-
-                                {activeTab === 'preferences' && (
-                                    <form onSubmit={handleContactPreferences}>
-                                        <h3 className="mb-4">Contact Preferences</h3>
-                                        <div className="mb-3 form-check">
-                                            <input
-                                                type="checkbox"
-                                                className="form-check-input"
-                                                id="emailNotifications"
-                                                checked={profileData.contactPreferences.email}
-                                                onChange={(e) => setProfileData({
-                                                    ...profileData,
-                                                    contactPreferences: {
-                                                        ...profileData.contactPreferences,
-                                                        email: e.target.checked
-                                                    }
-                                                })}
-                                            />
-                                            <label className="form-check-label" htmlFor="emailNotifications">
-                                                Receive Email Notifications
-                                            </label>
-                                        </div>
-                                        <div className="mb-3 form-check">
-                                            <input
-                                                type="checkbox"
-                                                className="form-check-input"
-                                                id="smsNotifications"
-                                                checked={profileData.contactPreferences.sms}
-                                                onChange={(e) => setProfileData({
-                                                    ...profileData,
-                                                    contactPreferences: {
-                                                        ...profileData.contactPreferences,
-                                                        sms: e.target.checked
-                                                    }
-                                                })}
-                                            />
-                                            <label className="form-check-label" htmlFor="smsNotifications">
-                                                Receive SMS Notifications
-                                            </label>
-                                        </div>
-                                        <div className="mb-3 form-check">
-                                            <input
-                                                type="checkbox"
-                                                className="form-check-input"
-                                                id="appNotifications"
-                                                checked={profileData.contactPreferences.notifications}
-                                                onChange={(e) => setProfileData({
-                                                    ...profileData,
-                                                    contactPreferences: {
-                                                        ...profileData.contactPreferences,
-                                                        notifications: e.target.checked
-                                                    }
-                                                })}
-                                            />
-                                            <label className="form-check-label" htmlFor="appNotifications">
-                                                Receive In-App Notifications
-                                            </label>
-                                        </div>
-                                        <button type="submit" className="btn btn-primary" disabled={loading}>
-                                            {loading ? 'Updating...' : 'Save Preferences'}
-                                        </button>
-                                    </form>
-                                )}
+                                </div>
                             </div>
-                        </div>
+                        )}
+                        {activeTab === 'theme' && (
+                            <div className={`card shadow-sm ${theme === 'dark' ? 'text-bg-dark' : ''}`}>
+                                <div className="card-header bg-body-tertiary">
+                                    <h3 className="mb-0">Theme Settings</h3>
+                                </div>
+                                <div className="card-body">
+                                    <p>Select your preferred theme.</p>
+                                    <div className="d-flex gap-3">
+                                        <button 
+                                            className={`btn ${theme === 'light' ? 'btn-primary' : 'btn-outline-secondary'} d-flex align-items-center`}
+                                            onClick={() => setTheme('light')}
+                                        >
+                                            <Sun className="me-2" /> Light
+                                        </button>
+                                        <button 
+                                            className={`btn ${theme === 'dark' ? 'btn-primary' : 'btn-outline-secondary'} d-flex align-items-center`}
+                                            onClick={() => setTheme('dark')}
+                                        >
+                                            <Moon className="me-2" /> Dark
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

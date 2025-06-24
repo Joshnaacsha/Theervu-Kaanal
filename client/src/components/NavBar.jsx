@@ -6,10 +6,12 @@ import UserInfo from './UserInfo';
 import { useAuth } from '../context/AuthContext';
 import NotificationBell from './NotificationBell';
 import { Dropdown } from 'react-bootstrap';
+import { useTheme } from '../context/ThemeContext';
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
+  const { theme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -47,7 +49,16 @@ const NavBar = () => {
       case 'admin':
         return '/admin/settings';
       case 'official':
-        return '/official/settings';
+        switch (user.department?.toLowerCase()) {
+          case 'rto':
+            return '/official-dashboard/rto/settings';
+          case 'water':
+            return '/official-dashboard/water/settings';
+          case 'electricity':
+            return '/official-dashboard/electricity/settings';
+          default:
+            return '/official/settings';
+        }
       case 'petitioner':
         return '/petitioner/settings';
       default:
@@ -81,7 +92,7 @@ const NavBar = () => {
             {/* User Profile Dropdown */}
             {user && (
               <Dropdown>
-                <Dropdown.Toggle variant="light" id="dropdown-basic" className="d-flex align-items-center">
+                <Dropdown.Toggle variant={theme === 'dark' ? 'dark' : 'light'} id="dropdown-basic" className="d-flex align-items-center">
                   <User size={16} className="me-2" />
                   {user.email}
                   {user.department && (

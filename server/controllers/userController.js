@@ -28,11 +28,18 @@ export const updateProfile = async (req, res) => {
     try {
         const Model = getModelByRole(req.user.role);
         const updates = req.body;
+        
         delete updates.password;
+
         const user = await Model.findByIdAndUpdate(req.user.id, updates, { new: true, runValidators: true }).select('-password');
         if (!user) return res.status(404).json({ message: 'User not found' });
         res.json(user);
     } catch (err) {
+        console.error("Profile update error:", err);
+        if (err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return res.status(400).json({ message: messages.join(', ') });
+        }
         res.status(500).json({ message: 'Server error' });
     }
 };

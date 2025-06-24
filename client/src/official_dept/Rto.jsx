@@ -753,7 +753,7 @@ const RtoDashboard = () => {
               <span className="badge bg-secondary ms-2">RTO</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={() => navigate('/settings')}>
+              <Dropdown.Item onClick={() => navigate('/official-dashboard/rto/settings')}>
                 <FaTools className="me-2" />
                 Settings
               </Dropdown.Item>

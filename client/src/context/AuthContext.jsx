@@ -125,6 +125,39 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
+    const refreshUser = async () => {
+        try {
+            const response = await authenticatedFetch('http://localhost:5000/api/users/profile');
+            const data = await response.json();
+
+            if (response.ok) {
+                const userData = {
+                    ...data,
+                    role: data.role.charAt(0).toUpperCase() + data.role.slice(1).toLowerCase()
+                };
+                localStorage.setItem('user', JSON.stringify(userData));
+                setUser(userData);
+            } else {
+                // Handle case where profile fetch fails, maybe due to token expiry
+                logout();
+            }
+        } catch (error) {
+            console.error('Error refreshing user data:', error);
+            logout(); // Logout on error to be safe
+        }
+    };
+
+    const updateUser = (newUserData) => {
+        const storedUser = JSON.parse(localStorage.getItem('user')) || {};
+        const userData = {
+            ...storedUser,
+            ...newUserData,
+            role: (newUserData.role || storedUser.role).charAt(0).toUpperCase() + (newUserData.role || storedUser.role).slice(1).toLowerCase()
+        };
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
+    };
+
     useEffect(() => {
         const interval = setInterval(checkTokenExpiration, 30000); // Check every 30 seconds
         return () => clearInterval(interval);
@@ -338,18 +371,22 @@ export const AuthProvider = ({ children }) => {
         return <div>Loading...</div>;
     }
 
+    const value = {
+        user,
+        loading,
+        login,
+        logout,
+        authenticatedFetch,
+        tokenExpiryWarning,
+        refreshUser,
+        updateUser,
+    };
+
     return (
-        <AuthContext.Provider value={{
-            user,
-            loading,
-            login,
-            logout,
-            authenticatedFetch,
-            tokenExpiryWarning
-        }}>
+        <AuthContext.Provider value={value}>
             {tokenExpiryWarning && (
                 <div className="fixed top-0 right-0 m-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
-                    <p>Your session will expire soon. Please save your work and log in again.</p>
+                    <p>Your session is about to expire. Please save your work.</p>
                 </div>
             )}
             {children}
