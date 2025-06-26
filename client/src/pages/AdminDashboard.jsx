@@ -317,25 +317,11 @@ const AdminDashboard = () => {
             case 'dashboard':
                 return (
                     <>
-                        <Row className="mb-4">
-                            <Col>
-                                <h2>Admin Dashboard</h2>
-                                <p className="text-muted">Welcome to the admin dashboard</p>
-                            </Col>
-                        </Row>
-
-                        {/* Top Navbar */}
-                        <div className="d-flex justify-content-between align-items-center bg-white p-3 shadow-sm mb-3">
-                            <h4>Dashboard</h4>
-                            <div className="d-flex align-items-center">
-                                <Button variant="light" className="me-3 position-relative">
+                        <div className="p-4">
+                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                <h2>Dashboard</h2>
+                                <div className="d-flex align-items-center gap-3">
                                     <Bell size={20} />
-                                    <span className="badge bg-danger position-absolute top-0 start-100 translate-middle">3</span>
-                                </Button>
-                                <div className="d-flex align-items-center">
-                                    <div className="rounded-circle bg-primary text-white p-2 me-2">A</div>
-                                    <span>Admin</span>
-                                    <ChevronDown size={16} />
                                 </div>
                             </div>
                         </div>
