@@ -97,8 +97,15 @@ app.use(cors({
         "https://tn-theervu-kaanal.vercel.app",
         "https://tn-complaint-portal.vercel.app"
     ],
-    credentials: true
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
