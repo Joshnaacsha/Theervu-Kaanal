@@ -130,7 +130,7 @@ const OfficialRegistration = () => {
         return;
       }
 
-      const response = await axios.post("http://localhost:5000/api/register/official", formData);
+      const response = await axios.post("https://theervu-kaanal.onrender.com/api/register/official", formData);
 
       if (response.status === 201) {
         toast.success("Official registration successful!");

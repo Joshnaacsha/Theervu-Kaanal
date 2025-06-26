@@ -32,7 +32,14 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "http://localhost:5173"],
+        origin: [
+            "http://localhost:3000",
+            "http://localhost:3001",
+            "http://localhost:3002",
+            "http://localhost:5173",
+            "https://tn-theervu-kaanal.vercel.app",
+            "https://tn-complaint-portal.vercel.app"
+        ],
         methods: ["GET", "POST", "DELETE", "PUT"]
     }
 });

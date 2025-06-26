@@ -31,7 +31,7 @@ const GrievancePortal = () => {
   return (
     <div className="min-vh-100 bg-light">
       {/* Navigation Bar */}
-      <NavBar/>
+      <NavBar />
       {/* Hero Section */}
       <section className="bg-primary text-white py-5">
         <div className="container">
@@ -41,10 +41,10 @@ const GrievancePortal = () => {
                 Submit and Track Your Grievances Easily
               </h1>
               <p className="lead mb-4">
-                A simple, efficient platform to voice your concerns and get them resolved quickly.
+                An easy-to-use platform for Tamil Nadu residents to raise complaints related to public services like water supply, sanitation, roads, electricity, and civic amenities.
               </p>
               <div className="d-grid gap-2 d-sm-flex">
-                <button 
+                <button
                   className="btn btn-warning px-4 py-2 me-md-2 d-flex align-items-center justify-content-center"
                   onClick={handleSubmitGrievance}
                 >
@@ -61,12 +61,12 @@ const GrievancePortal = () => {
           </div>
         </div>
       </section>
-      
+
       {/* Features Section */}
       <section className="py-5 bg-white">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold">How Our Grievance System Works</h2>
-          
+
           <div className="row g-4">
             {/* Feature 1 */}
             <div className="col-md-4">
@@ -82,7 +82,7 @@ const GrievancePortal = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Feature 2 */}
             <div className="col-md-4">
               <div className="card h-100 border-0 shadow-sm">
@@ -97,7 +97,7 @@ const GrievancePortal = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Feature 3 */}
             <div className="col-md-4">
               <div className="card h-100 border-0 shadow-sm">
@@ -115,7 +115,7 @@ const GrievancePortal = () => {
           </div>
         </div>
       </section>
-      
+
       {/* Statistics Section */}
       <section className="py-5 bg-light">
         <div className="container">
@@ -139,12 +139,12 @@ const GrievancePortal = () => {
           </div>
         </div>
       </section>
-      
+
       {/* FAQs Section */}
       <section className="py-5 bg-white">
         <div className="container">
           <h2 className="text-center mb-5 fw-bold">Frequently Asked Questions</h2>
-          
+
           <div className="row justify-content-center">
             <div className="col-lg-8">
               <div className="accordion" id="faqAccordion">
@@ -160,7 +160,7 @@ const GrievancePortal = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="accordion-item border mb-3 rounded">
                   <h2 className="accordion-header" id="headingTwo">
                     <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -173,7 +173,7 @@ const GrievancePortal = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="accordion-item border mb-3 rounded">
                   <h2 className="accordion-header" id="headingThree">
                     <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -241,7 +241,7 @@ const GrievancePortal = () => {
           </div>
         </div>
       )}
-      
+
       {/* Modal Backdrop */}
       {showTrackModal && (
         <div className="modal-backdrop show" style={{ zIndex: 1040 }}></div>

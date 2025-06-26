@@ -528,7 +528,7 @@ const ElectricityDashboard = () => {
                   <div className="mb-3">
                     <h5 className="font-medium">Original Document:</h5>
                     <a
-                      href={`http://localhost:5000/uploads/documents/${selectedGrievance.originalDocument.path.split(/[\/\\]/).pop()}`}
+                      href={`https://theervu-kaanal.onrender.com/uploads/documents/${selectedGrievance.originalDocument.path.split(/[\/\\]/).pop()}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center mt-2 px-4 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition-colors"
@@ -553,7 +553,7 @@ const ElectricityDashboard = () => {
                       {selectedGrievance.attachments.map((attachment, index) => (
                         <a
                           key={index}
-                          href={`http://localhost:5000/uploads/documents/${attachment.path.split(/[\/\\]/).pop()}`}
+                          href={`https://theervu-kaanal.onrender.com/uploads/documents/${attachment.path.split(/[\/\\]/).pop()}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition-colors"

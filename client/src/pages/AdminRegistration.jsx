@@ -93,7 +93,7 @@ const AdminRegistration = () => {
 
     if (validateForm()) {
       try {
-        const response = await fetch('http://localhost:5000/api/admin/register', {  // Use your actual backend URL
+        const response = await fetch('https://theervu-kaanal.onrender.com/api/admin/register', {  // Use your actual backend URL
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

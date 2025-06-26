@@ -20,9 +20,49 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Constants for validation 
 const VALID_DEPARTMENTS = ['Water', 'RTO', 'Electricity'];
-const VALID_DIVISIONS = ['North', 'South', 'East', 'West', 'Central'];
-const VALID_DISTRICTS = ['Bengaluru Urban', 'Bengaluru Rural', 'Mysuru', 'Belagavi', 'Kalaburagi', 'Mangaluru', 'Hubballi', 'Dharwad'];
-const VALID_TALUKS = ['Bengaluru East', 'Bengaluru West', 'Bengaluru South', 'Bengaluru North', 'Nelamangala', 'Doddaballapura', 'Devanahalli', 'Hosakote', 'Anekal', 'Central Mysuru', 'North Mysuru', 'South Mysuru'];
+const VALID_DISTRICTS = [
+    "Chennai",
+    "Coimbatore",
+    "Madurai",
+    "Salem",
+    "Tiruchirappalli"
+];
+const VALID_DIVISIONS = [
+    // Chennai
+    "Chennai Central", "Chennai South", "Chennai North",
+    // Coimbatore
+    "Coimbatore North", "Coimbatore South",
+    // Madurai
+    "Madurai Central", "Madurai South",
+    // Salem
+    "Salem East", "Salem West",
+    // Tiruchirappalli
+    "Tiruchirappalli Central", "Tiruchirappalli South"
+];
+const VALID_TALUKS = [
+    // Chennai Central
+    "Egmore", "Tondiarpet", "Mylapore", "Triplicane",
+    // Chennai South
+    "Adyar", "Guindy", "Tambaram", "Chengalpattu",
+    // Chennai North
+    "Ambattur", "Avadi", "Tiruvottiyur", "Madhavaram",
+    // Coimbatore North
+    "Singanallur", "Peelamedu", "Saibaba Colony", "R.S. Puram",
+    // Coimbatore South
+    "Gandhipuram", "Race Course", "Tatabad", "Kovaipudur",
+    // Madurai Central
+    "Anna Nagar", "K.K. Nagar", "Villapuram", "Thirunagar",
+    // Madurai South
+    "Tirumangalam", "Melur", "Vadipatti", "Usilampatti",
+    // Salem East
+    "Hasthampatti", "Fairlands", "Fort", "Shevapet",
+    // Salem West
+    "Suramangalam", "Ammapet", "Fairlands", "Gugai",
+    // Tiruchirappalli Central
+    "Srirangam", "Thiruverumbur", "Thiruvaanaikoil", "Manachanallur",
+    // Tiruchirappalli South
+    "Lalgudi", "Manapparai", "Thuraiyur", "Uppiliyapuram"
+];
 const VALID_STATUSES = ['Pending', 'In Progress', 'Resolved', 'Declined'];
 const VALID_PRIORITIES = ['Low', 'Medium', 'High', 'Critical'];
 
@@ -584,11 +624,12 @@ function parseAndValidateAnalysis(analysisText) {
 
         // Normalize and validate parameters
         if (analysis.params.department) {
-            const departmentInput = analysis.params.department.charAt(0).toUpperCase() +
-                analysis.params.department.slice(1).toLowerCase();
-
-            if (VALID_DEPARTMENTS.includes(departmentInput)) {
-                analysis.params.department = departmentInput;
+            const departmentInput = analysis.params.department.trim().toLowerCase();
+            const matchedDepartment = VALID_DEPARTMENTS.find(
+                d => d.toLowerCase() === departmentInput
+            );
+            if (matchedDepartment) {
+                analysis.params.department = matchedDepartment;
             } else {
                 console.warn(`Invalid department: ${analysis.params.department}`);
                 delete analysis.params.department;
@@ -724,7 +765,7 @@ async function buildMongoQuery(analysis) {
     const priority = params.priority?.toLowerCase();
     const status = params.status?.toLowerCase();
     const caseId = params.caseId?.trim();
-    const countTarget = params.countTarget?.toLowerCase();
+    const countTarget = params.countTarget?.toLowerCase() || 'cases';
 
     // Build location filters (reused across multiple query types)
     const locationFilters = {};
@@ -944,9 +985,11 @@ function formatCountResponse(results, analysis) {
         const { params } = analysis;
         const countTarget = params.countTarget?.toLowerCase() || 'cases';
         const department = params.department || 'all departments';
-        const location = params.district ?
-            `${params.district}${params.division ? ` - ${params.division} Division` : ''}` :
-            (params.taluk ? params.taluk : 'all locations');
+        const location =
+            params.taluk ? params.taluk :
+                params.division ? `${params.division} Division` :
+                    params.district ? params.district :
+                        'all locations';
 
         // If this is an isCount query from MongoDB
         if (results && results.isCount) {

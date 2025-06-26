@@ -127,7 +127,7 @@ export const AuthProvider = ({ children }) => {
 
     const refreshUser = async () => {
         try {
-            const response = await authenticatedFetch('http://localhost:5000/api/users/profile');
+            const response = await authenticatedFetch('https://theervu-kaanal.onrender.com/api/users/profile');
             const data = await response.json();
 
             if (response.ok) {
@@ -180,7 +180,7 @@ export const AuthProvider = ({ children }) => {
             // Extract email if it's an object
             const emailValue = typeof email === 'object' ? email.email : email;
 
-            const response = await fetch(`http://localhost:5000${endpoint}`, {
+            const response = await fetch(`https://theervu-kaanal.onrender.com${endpoint}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -305,7 +305,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         // Ensure URL starts with backend server address
-        const baseUrl = 'http://localhost:5000';
+        const baseUrl = 'https://theervu-kaanal.onrender.com';
         const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
 
         const defaultHeaders = {

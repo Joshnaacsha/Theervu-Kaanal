@@ -165,7 +165,7 @@ const RtoDashboard = () => {
       }
 
       const response = await fetch(
-        `http://localhost:5000/api/grievances/department/RTO/${activeTab}${priorityFilter ? `?priority=${priorityFilter}` : ''}`,
+        `https://theervu-kaanal.onrender.com/api/grievances/department/RTO/${activeTab}${priorityFilter ? `?priority=${priorityFilter}` : ''}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -188,7 +188,7 @@ const RtoDashboard = () => {
       const processedGrievances = await Promise.all(data.grievances.map(async (grievance) => {
         try {
           // Call Gemini AI for priority analysis
-          const priorityResponse = await fetch('http://localhost:5000/api/grievances/analyze-priority', {
+          const priorityResponse = await fetch('https://theervu-kaanal.onrender.com/api/grievances/analyze-priority', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -267,7 +267,7 @@ const RtoDashboard = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No authentication token found');
 
-      const response = await fetch(`http://localhost:5000/api/grievances/${grievanceId}/accept`, {
+      const response = await fetch(`https://theervu-kaanal.onrender.com/api/grievances/${grievanceId}/accept`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -297,7 +297,7 @@ const RtoDashboard = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:5000/api/grievances/${grievanceId}/decline`, {
+      const response = await fetch(`https://theervu-kaanal.onrender.com/api/grievances/${grievanceId}/decline`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -327,7 +327,7 @@ const RtoDashboard = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:5000/api/grievances/${grievanceId}/start-progress`, {
+      const response = await fetch(`https://theervu-kaanal.onrender.com/api/grievances/${grievanceId}/start-progress`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -367,7 +367,7 @@ const RtoDashboard = () => {
           formData.append('document', file);
 
           // First upload the document
-          const uploadResponse = await fetch(`http://localhost:5000/api/grievances/${grievanceId}/upload-resolution`, {
+          const uploadResponse = await fetch(`https://theervu-kaanal.onrender.com/api/grievances/${grievanceId}/upload-resolution`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -382,7 +382,7 @@ const RtoDashboard = () => {
           }
 
           // Then resolve the grievance
-          const resolveResponse = await fetch(`http://localhost:5000/api/grievances/${grievanceId}/resolve`, {
+          const resolveResponse = await fetch(`https://theervu-kaanal.onrender.com/api/grievances/${grievanceId}/resolve`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -425,7 +425,7 @@ const RtoDashboard = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No authentication token found');
 
-      const response = await fetch(`http://localhost:5000/api/grievances/${grievanceId}/resource-management`, {
+      const response = await fetch(`https://theervu-kaanal.onrender.com/api/grievances/${grievanceId}/resource-management`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -455,7 +455,7 @@ const RtoDashboard = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No authentication token found');
 
-      const response = await fetch(`http://localhost:5000/api/grievances/${selectedGrievance._id}/timeline`, {
+      const response = await fetch(`https://theervu-kaanal.onrender.com/api/grievances/${selectedGrievance._id}/timeline`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -497,7 +497,7 @@ const RtoDashboard = () => {
   const updateMilestone = (index, field, value) => {
     setTimelineForm(prev => ({
       ...prev,
-      milestones: prev.milestones.map((milestone, i) => 
+      milestones: prev.milestones.map((milestone, i) =>
         i === index ? { ...milestone, [field]: value } : milestone
       )
     }));
@@ -508,7 +508,7 @@ const RtoDashboard = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No authentication token found');
 
-      const response = await fetch(`http://localhost:5000/api/grievances/${grievanceId}/assign`, {
+      const response = await fetch(`https://theervu-kaanal.onrender.com/api/grievances/${grievanceId}/assign`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -534,7 +534,7 @@ const RtoDashboard = () => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('No authentication token found');
 
-      const response = await fetch('http://localhost:5000/api/officers', {
+      const response = await fetch('https://theervu-kaanal.onrender.com/api/officers', {
         headers: {
           'Authorization': `Bearer ${token}`
         }

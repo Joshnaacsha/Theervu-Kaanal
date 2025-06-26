@@ -77,7 +77,7 @@ const PetitionerDashboard = () => {
         setLoading(true);
         setError('');
         try {
-            const response = await authenticatedFetch(`http://localhost:5000/api/grievances/user/${user.id}`);
+            const response = await authenticatedFetch(`https://theervu-kaanal.onrender.com/api/grievances/user/${user.id}`);
             const data = await response.json();
 
             if (response.ok) {
@@ -158,7 +158,7 @@ const PetitionerDashboard = () => {
 
     const handleEscalateSubmit = async (reason) => {
         try {
-            const response = await authenticatedFetch(`http://localhost:5000/api/grievances/${selectedGrievanceForEscalation._id}/escalate`, {
+            const response = await authenticatedFetch(`https://theervu-kaanal.onrender.com/api/grievances/${selectedGrievanceForEscalation._id}/escalate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -184,7 +184,7 @@ const PetitionerDashboard = () => {
     const handleGiveFeedback = async (grievance) => {
         try {
             // First, get the latest grievance data to make sure we have current feedback status
-            const response = await authenticatedFetch(`http://localhost:5000/api/grievances/${grievance._id}/status`);
+            const response = await authenticatedFetch(`https://theervu-kaanal.onrender.com/api/grievances/${grievance._id}/status`);
 
             if (!response.ok) {
                 throw new Error('Failed to fetch grievance details');
@@ -227,7 +227,7 @@ const PetitionerDashboard = () => {
                 return;
             }
 
-            const response = await authenticatedFetch(`http://localhost:5000/api/grievances/${selectedGrievanceForFeedback._id}/feedback`, {
+            const response = await authenticatedFetch(`https://theervu-kaanal.onrender.com/api/grievances/${selectedGrievanceForFeedback._id}/feedback`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -580,40 +580,37 @@ const PetitionerDashboard = () => {
                 )}
 
                 {/* Resolution Document Modal */}
-                {showDocumentModal && selectedGrievance && selectedGrievance.resolutionDocument && (
+                {showDocumentModal && selectedGrievance && (
                     <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
                         <div className="modal-dialog modal-lg">
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    <div className="d-flex align-items-center">
-                                        <button
-                                            type="button"
-                                            className="btn btn-link text-dark me-3"
-                                            onClick={() => {
-                                                setShowDocumentModal(false);
-                                                setSelectedGrievance(null);
-                                            }}
-                                        >
-                                            <ArrowLeft size={24} />
-                                        </button>
-                                        <h5 className="modal-title mb-0">
-                                            Resolution Document - Grievance {selectedGrievance.grievanceId}
-                                        </h5>
-                                    </div>
+                                    <h5 className="modal-title">Resolution Document</h5>
+                                    <button
+                                        type="button"
+                                        className="btn-close"
+                                        onClick={() => {
+                                            setShowDocumentModal(false);
+                                            setSelectedGrievance(null);
+                                        }}
+                                    ></button>
                                 </div>
                                 <div className="modal-body">
-                                    <div className="text-center">
-                                        <h6>Document: {selectedGrievance.resolutionDocument.filename}</h6>
-                                        <p>Uploaded on: {moment(selectedGrievance.resolutionDocument.uploadedAt).format('MMMM Do YYYY, h:mm a')}</p>
-                                        <a
-                                            href={selectedGrievance.resolutionDocument.url || '#'}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="btn btn-outline-primary mt-2"
-                                        >
-                                            Download/View Document
-                                        </a>
-                                    </div>
+                                    {selectedGrievance.resolutionDocument ? (
+                                        <div className="text-center">
+                                            <a
+                                                href={`https://theervu-kaanal.onrender.com/uploads/resolution-docs/${selectedGrievance.resolutionDocument.path.split(/[\/\\]/).pop()}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="btn btn-primary"
+                                            >
+                                                <Eye size={16} className="me-2" />
+                                                View Resolution Document
+                                            </a>
+                                        </div>
+                                    ) : (
+                                        <p className="text-center text-muted">No resolution document available</p>
+                                    )}
                                 </div>
                             </div>
                         </div>

@@ -16,7 +16,7 @@ const TimelineView = ({ grievanceId, onBack }) => {
             const token = localStorage.getItem('token');
             const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
-            const response = await fetch(`http://localhost:5000/api/grievances/${grievanceId}/timeline-stages`, {
+            const response = await fetch(`https://theervu-kaanal.onrender.com/api/grievances/${grievanceId}/timeline-stages`, {
                 headers: headers
             });
 

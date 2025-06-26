@@ -249,7 +249,7 @@ const grievanceSchema = new mongoose.Schema({
     priority: {
         type: String,
         required: true,
-        enum: ['High', 'Medium', 'Low'],
+        enum: ['High', 'Medium', 'Low', 'high', 'medium', 'low'],
         default: 'Medium'
     },
     priorityExplanation: {

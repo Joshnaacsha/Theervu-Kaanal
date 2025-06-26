@@ -70,64 +70,61 @@ const NavBar = () => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container">
         <div className="d-flex justify-content-between align-items-center w-100">
-          <div className="d-flex align-items-center">
-            {/* Logo and Brand */}
-            <Link to="/" className="navbar-brand d-flex align-items-center">
-              <img src={shield} alt="Logo" className="me-2" style={{ height: '30px' }} />
-              <span>Grievance Portal</span>
-            </Link>
-          </div>
+          {/* Logo and Brand */}
+          <Link to="/" className="navbar-brand d-flex align-items-center">
+            <img src={shield} alt="Logo" className="me-2" style={{ height: '30px' }} />
+            <span className="d-none d-sm-inline">TN Theervu Kaanal</span>
+          </Link>
 
-          <div className="d-flex align-items-center gap-3">
-            {/* Notification Bell for logged-in users */}
-            {user && (
-              <div className="position-relative">
-                <NotificationBell
-                  userId={user.id}
-                  userRole={user.role}
-                />
-              </div>
-            )}
+          {/* Mobile Menu Button */}
+          <button
+            className="navbar-toggler d-lg-none"
+            type="button"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
 
-            {/* User Profile Dropdown */}
-            {user && (
-              <Dropdown>
-                <Dropdown.Toggle variant={theme === 'dark' ? 'dark' : 'light'} id="dropdown-basic" className="d-flex align-items-center">
-                  <User size={16} className="me-2" />
-                  {user.email}
-                  {user.department && (
-                    <span className="badge bg-secondary ms-2">{user.department}</span>
-                  )}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item as={Link} to={getDashboardPath()}>
-                    <User size={16} className="me-2" />
-                    Dashboard
-                  </Dropdown.Item>
-                  <Dropdown.Item as={Link} to={getSettingsPath()}>
-                    <Settings size={16} className="me-2" />
-                    Settings
-                  </Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item onClick={handleLogout}>
-                    <LogOut size={16} className="me-2" />
-                    Logout
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            )}
+          {/* Desktop and Mobile Menu */}
+          <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`}>
+            <div className="d-flex flex-column flex-lg-row align-items-lg-center ms-auto gap-3">
+              {/* Notification Bell for logged-in users */}
+              {user && (
+                <div className="position-relative">
+                  <NotificationBell userId={user.id} userRole={user.role} />
+                </div>
+              )}
 
-            {/* Login/Register Buttons for non-logged-in users */}
-            {!user && (
-              <div className="d-flex gap-2">
-                <Link to="/login" className="btn btn-outline-light btn-sm">
-                  Login
-                </Link>
-                <Link to="/register" className="btn btn-light btn-sm">
-                  Register
-                </Link>
-              </div>
-            )}
+              {/* User Menu */}
+              {user ? (
+                <Dropdown>
+                  <Dropdown.Toggle variant="transparent" className="text-white border-0 d-flex align-items-center gap-2">
+                    <User size={20} />
+                    <span className="d-none d-sm-inline">{user.firstName}</span>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu align="end">
+                    <Dropdown.Item as={Link} to={getDashboardPath()}>
+                      <User size={16} className="me-2" />
+                      Dashboard
+                    </Dropdown.Item>
+                    <Dropdown.Item as={Link} to={getSettingsPath()}>
+                      <Settings size={16} className="me-2" />
+                      Settings
+                    </Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item onClick={handleLogout}>
+                      <LogOut size={16} className="me-2" />
+                      Logout
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              ) : (
+                <div className="d-flex gap-2">
+                  <Link to="/login" className="btn btn-outline-light">Login</Link>
+                  <Link to="/register" className="btn btn-light">Register</Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

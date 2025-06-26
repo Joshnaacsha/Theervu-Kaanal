@@ -148,7 +148,7 @@ const ChatComponent = ({ grievanceId, petitionerId, officialId }) => {
             }
 
             // Get token from backend
-            const tokenResponse = await fetch('http://localhost:5000/api/chat/token', {
+            const tokenResponse = await fetch('https://theervu-kaanal.onrender.com/api/chat/token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

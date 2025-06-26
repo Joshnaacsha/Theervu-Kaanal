@@ -49,7 +49,7 @@ const NotificationBell = ({ userId, userRole }) => {
     const fetchNotifications = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`http://localhost:5000/api/notifications/user/${userId}`, {
+            const response = await axios.get(`https://theervu-kaanal.onrender.com/api/notifications/user/${userId}`, {
                 headers: getAuthHeader()
             });
 
@@ -86,7 +86,7 @@ const NotificationBell = ({ userId, userRole }) => {
     // Mark notification as read
     const markAsRead = async (notificationId) => {
         try {
-            await axios.put(`http://localhost:5000/api/notifications/${notificationId}/read`, {}, {
+            await axios.put(`https://theervu-kaanal.onrender.com/api/notifications/${notificationId}/read`, {}, {
                 headers: getAuthHeader()
             });
             setNotifications(notifications.map(n =>
@@ -102,7 +102,7 @@ const NotificationBell = ({ userId, userRole }) => {
     // Mark all as read
     const markAllAsRead = async () => {
         try {
-            await axios.put(`http://localhost:5000/api/notifications/user/${userId}/read-all`, {}, {
+            await axios.put(`https://theervu-kaanal.onrender.com/api/notifications/user/${userId}/read-all`, {}, {
                 headers: getAuthHeader()
             });
             setNotifications(notifications.map(n => ({ ...n, read: true })));
