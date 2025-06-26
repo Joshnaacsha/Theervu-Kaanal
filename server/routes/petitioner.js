@@ -1,5 +1,5 @@
 import express from "express";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { generateToken } from "../middleware/auth.js";
 import Petitioner from "../models/Petitioner.js";
 
