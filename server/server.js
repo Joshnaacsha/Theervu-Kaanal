@@ -89,7 +89,14 @@ cron.schedule('0 12 * * *', async () => {
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "http://localhost:5173"],
+    origin: [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost:3002",
+        "http://localhost:5173",
+        "https://tn-theervu-kaanal.vercel.app",
+        "https://tn-complaint-portal.vercel.app"
+    ],
     credentials: true
 }));
 
